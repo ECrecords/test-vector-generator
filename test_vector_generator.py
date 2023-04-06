@@ -1,8 +1,6 @@
 import numpy as np
 import json
 import argparse
-import sys
-
 
 def main():
     NUM_BITS: int = 32
