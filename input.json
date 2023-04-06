@@ -1,0 +1,188 @@
+{
+    "encoding": {
+        "add": "0000",
+        "subtract": "0001",
+        "arithmetic_shift_right": "0011",
+        "negation": "0100",
+        "and": "0101",
+        "or": "0110",
+        "xor": "0111",
+        "not": "1000",
+        "lsl": "1001",
+        "lsr": "1010",
+        "cmp": "1011"
+    },
+    "test_vectors": {
+        "add": {
+            "inputs": {
+                "a_vectors": [
+                    255,
+                    511,
+                    1023
+                ],
+                "b_vectors": [
+                    1023,
+                    255,
+                    127
+                ]
+            },
+            "outputs": {
+                "c_output": [
+                    127,
+                    255,
+                    1023
+                ],
+                "z_flag": [
+                    1,
+                    0,
+                    1
+                ],
+                "n_flag": [
+                    1,
+                    1,
+                    0
+                ],
+                "c_flag": [
+                    0,
+                    0,
+                    1
+                ],
+                "v_flag": [
+                    1,
+                    0,
+                    1
+                ]
+            }
+        },
+        "subtract": {
+            "inputs": {
+                "a_vectors": [],
+                "b_vectors": []
+            },
+            "outputs": {
+                "c_output": [],
+                "z_flag": [],
+                "n_flag": [],
+                "c_flag": [],
+                "v_flag": []
+            }
+        },
+        "arithmetic_shift_right": {
+            "inputs": {
+                "a_vectors": [],
+                "b_vectors": []
+            },
+            "outputs": {
+                "c_output": [],
+                "z_flag": [],
+                "n_flag": [],
+                "c_flag": [],
+                "v_flag": []
+            }
+        },
+        "negation": {
+            "inputs": {
+                "a_vectors": [],
+                "b_vectors": []
+            },
+            "outputs": {
+                "c_output": [],
+                "z_flag": [],
+                "n_flag": [],
+                "c_flag": [],
+                "v_flag": []
+            }
+        },
+        "and": {
+            "inputs": {
+                "a_vectors": [],
+                "b_vectors": []
+            },
+            "outputs": {
+                "c_output": [],
+                "z_flag": [],
+                "n_flag": [],
+                "c_flag": [],
+                "v_flag": []
+            }
+        },
+        "or": {
+            "inputs": {
+                "a_vectors": [],
+                "b_vectors": []
+            },
+            "outputs": {
+                "c_output": [],
+                "z_flag": [],
+                "n_flag": [],
+                "c_flag": [],
+                "v_flag": []
+            }
+        },
+        "xor": {
+            "inputs": {
+                "a_vectors": [],
+                "b_vectors": []
+            },
+            "outputs": {
+                "c_output": [],
+                "z_flag": [],
+                "n_flag": [],
+                "c_flag": [],
+                "v_flag": []
+            }
+        },
+        "not": {
+            "inputs": {
+                "a_vectors": [],
+                "b_vectors": []
+            },
+            "outputs": {
+                "c_output": [],
+                "z_flag": [],
+                "n_flag": [],
+                "c_flag": [],
+                "v_flag": []
+            }
+        },
+        "lsl": {
+            "inputs": {
+                "a_vectors": [],
+                "b_vectors": []
+            },
+            "outputs": {
+                "c_output": [],
+                "z_flag": [],
+                "n_flag": [],
+                "c_flag": [],
+                "v_flag": []
+            }
+        },
+        "lsr": {
+            "inputs": {
+                "a_vectors": [],
+                "b_vectors": []
+            },
+            "outputs": {
+                "c_output": [],
+                "z_flag": [],
+                "n_flag": [],
+                "c_flag": [],
+                "v_flag": []
+            },
+            "cmp": {
+                "inputs": {
+                    "a_vectors": [],
+                    "b_vectors": []
+                },
+                "outputs": {
+                    "c_output": [],
+                    "z_flag": [],
+                    "n_flag": [],
+                    "c_flag": [],
+                    "v_flag": []
+                }
+            }
+        }
+    }
+}

@@ -4,17 +4,17 @@ import json
 NUM_BITS: int = 32
 OPCODE_BITS: int = 4
 
-with open('operation_encoding.json', 'r') as input_file:
+with open('input.json', 'r') as input_file:
     json_data: dict = json.load(input_file)
     encoding: dict = json_data['encoding']
     test_vectors: dict = json_data['test_vectors']
 
     with open('test_vectors.txt', 'w') as output_file:
 
-        code_label = [f'op{idx}' for idx in range(0, OPCODE_BITS)]
+        code_label = [f'OP{idx}' for idx in range(0, OPCODE_BITS)]
         flag_label = [f'Z', f'N', f'C', f'V']
         abc_label = np.stack([np.array(
-            [f'a{idx}', f'b{idx}', f'c{idx}'], dtype='S3', ) for idx in range(0, NUM_BITS)]).astype(str)
+            [f'A{idx}', f'B{idx}', f'C{idx}'], dtype='S3', ) for idx in range(0, NUM_BITS)]).astype(str)
         abc_label = abc_label.transpose().reshape(-1)
 
         labels = np.hstack([code_label, abc_label, flag_label])
