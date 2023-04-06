@@ -40,28 +40,21 @@ with open('operation_encoding.json', 'r') as input_file:
                     [bit for bit in np.binary_repr(b, NUM_BITS)]).astype(str)
                 c_bin: np.array = np.array(
                     [bit for bit in np.binary_repr(c, NUM_BITS)]).astype(str)
-                z_bin: np.array = np.array(
+                zf_bin: np.array = np.array(
                     [bit for bit in np.binary_repr(zf, 1)]).astype(str)
-                n_bin: np.array = np.array(
+                nf_bin: np.array = np.array(
                     [bit for bit in np.binary_repr(nf, 1)]).astype(str)
-                c_bin: np.array = np.array(
+                cf_bin: np.array = np.array(
                     [bit for bit in np.binary_repr(cf, 1)]).astype(str)
-                v_bin: np.array = np.array(
+                vf_bin: np.array = np.array(
                     [bit for bit in np.binary_repr(vf, 1)]).astype(str)
 
-                line = np.hstack([opcode, a_bin, b_bin, c_bin, z_bin, n_bin, c_bin, v_bin])
+                line = np.hstack([opcode, a_bin, b_bin, c_bin, zf_bin, nf_bin, cf_bin, vf_bin])
                 np.savetxt(output_file, line, fmt='%s', newline='\t\t')
-                output_file.write('\b')
-
-        # test = np.hstack([binary_list, binary_list, binary_list])
-        # print(test.shape)
-        # print(header.shape)
-        # header = np.stack([header, test])
-
-        # print(header)
-
-        # np.savetxt(output_file, header.astype(str), fmt='%s', delimiter='\t\t')
-        # # test_vectors.write('\t\t\t\t')
-        # # np.savetxt(test_vectors, header[:, 1].astype(str).tolist(), fmt='%s', newline='\t\t')
-        # # test_vectors.write('\n')
-        # # np.savetxt(test_vectors, np.array(binary_list).astype(str), fmt='%s', newline='\t\t')
+                output_file.write('\n')    
+            
+            comment = ['---------' for i in range(0, len(line)-10)]
+            comment[0] = '#'
+            comment[-1] = '#'
+            np.savetxt(output_file, comment, fmt='%s', newline='')
+            output_file.write('\n')
