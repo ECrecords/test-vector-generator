@@ -21,24 +21,24 @@
                     1023
                 ],
                 "b_vectors": [
-                    1023,
                     255,
-                    127
+                    511,
+                    1023
                 ]
             },
             "outputs": {
                 "c_output": [
-                    127,
                     255,
+                    511,
                     1023
                 ],
                 "z_flag": [
-                    1,
+                    0,
                     0,
                     1
                 ],
                 "n_flag": [
-                    1,
+                    0,
                     1,
                     0
                 ],
@@ -48,7 +48,7 @@
                     1
                 ],
                 "v_flag": [
-                    1,
+                    0,
                     0,
                     1
                 ]
@@ -56,15 +56,15 @@
         },
         "subtract": {
             "inputs": {
-                "a_vectors": [],
-                "b_vectors": []
+                "a_vectors": [1],
+                "b_vectors": [1, 1]
             },
             "outputs": {
-                "c_output": [],
-                "z_flag": [],
-                "n_flag": [],
-                "c_flag": [],
-                "v_flag": []
+                "c_output": [1, 0],
+                "z_flag": [0, 0],
+                "n_flag": [1],
+                "c_flag": [1],
+                "v_flag": [1]
             }
         },
         "arithmetic_shift_right": {
