@@ -1,6 +1,7 @@
 import numpy as np
 import json
 import argparse
+import sys
 
 
 def main():
@@ -8,10 +9,12 @@ def main():
     OPCODE_BITS: int = 4
 
     parser = argparse.ArgumentParser(description='Generate test vectors from a JSON file.')
-    parser.add_argument('-j', '--json', type=str, help='The name of the input JSON file.', default='input.json')
+    parser.add_argument('-j', '--json', type=str, help='The name of the input JSON file.')
     parser.add_argument('-f', '--filename', type=str, help='The name of the output text file.', default='test_vectors.txt', nargs='?')
     args = parser.parse_args()
 
+    if not args.json:
+        parser.error('No input file specified. Please provide an input file name.')
 
     with open(args.json, 'r') as input_file:
         json_data: dict = json.load(input_file)
