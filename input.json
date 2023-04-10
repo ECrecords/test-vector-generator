@@ -1,160 +1,157 @@
 {
-    "encoding": {
-        "add": "0000",
-        "subtract": "0001",
-        "arithmetic_shift_right": "0011",
-        "negation": "0100",
-        "and": "0101",
-        "or": "0110",
-        "xor": "0111",
-        "not": "1000",
-        "lsl": "1001",
-        "lsr": "1010",
-        "cmp": "1011"
+    "add": {
+        "inputs": {
+            "encoding": "0000",
+            "a_vectors": [],
+            "b_vectors": []
+        },
+        "outputs": {
+            "c_output": [],
+            "z_flag": [],
+            "n_flag": [],
+            "c_flag": [],
+            "v_flag": []
+        }
     },
-    "test_vectors": {
-        "add": {
-            "inputs": {
-                "a_vectors": [],
-                "b_vectors": []
-            },
-            "outputs": {
-                "c_output": [],
-                "z_flag": [],
-                "n_flag": [],
-                "c_flag": [],
-                "v_flag": []
-            }
+    "subtract": {
+        "inputs": {
+            "encoding": "0000",
+            "a_vectors": [],
+            "b_vectors": []
         },
-        "subtract": {
-            "inputs": {
-                "a_vectors": [],
-                "b_vectors": []
-            },
-            "outputs": {
-                "c_output": [],
-                "z_flag": [],
-                "n_flag": [],
-                "c_flag": [],
-                "v_flag": []
-            }
+        "outputs": {
+            "c_output": [],
+            "z_flag": [],
+            "n_flag": [],
+            "c_flag": [],
+            "v_flag": []
+        }
+    },
+    "arithmetic_shift_right": {
+        "inputs": {
+            "encoding": "0000",
+            "a_vectors": [],
+            "b_vectors": []
         },
-        "arithmetic_shift_right": {
-            "inputs": {
-                "a_vectors": [],
-                "b_vectors": []
-            },
-            "outputs": {
-                "c_output": [],
-                "z_flag": [],
-                "n_flag": [],
-                "c_flag": [],
-                "v_flag": []
-            }
+        "outputs": {
+            "c_output": [],
+            "z_flag": [],
+            "n_flag": [],
+            "c_flag": [],
+            "v_flag": []
+        }
+    },
+    "negation": {
+        "inputs": {
+            "encoding": "0000",
+            "a_vectors": [],
+            "b_vectors": []
         },
-        "negation": {
-            "inputs": {
-                "a_vectors": [],
-                "b_vectors": []
-            },
-            "outputs": {
-                "c_output": [],
-                "z_flag": [],
-                "n_flag": [],
-                "c_flag": [],
-                "v_flag": []
-            }
+        "outputs": {
+            "c_output": [],
+            "z_flag": [],
+            "n_flag": [],
+            "c_flag": [],
+            "v_flag": []
+        }
+    },
+    "and": {
+        "inputs": {
+            "encoding": "0000",
+            "a_vectors": [],
+            "b_vectors": []
         },
-        "and": {
-            "inputs": {
-                "a_vectors": [],
-                "b_vectors": []
-            },
-            "outputs": {
-                "c_output": [],
-                "z_flag": [],
-                "n_flag": [],
-                "c_flag": [],
-                "v_flag": []
-            }
+        "outputs": {
+            "c_output": [],
+            "z_flag": [],
+            "n_flag": [],
+            "c_flag": [],
+            "v_flag": []
+        }
+    },
+    "or": {
+        "inputs": {
+            "encoding": "0000",
+            "a_vectors": [],
+            "b_vectors": []
         },
-        "or": {
-            "inputs": {
-                "a_vectors": [],
-                "b_vectors": []
-            },
-            "outputs": {
-                "c_output": [],
-                "z_flag": [],
-                "n_flag": [],
-                "c_flag": [],
-                "v_flag": []
-            }
+        "outputs": {
+            "encoding": "0000",
+            "c_output": [],
+            "z_flag": [],
+            "n_flag": [],
+            "c_flag": [],
+            "v_flag": []
+        }
+    },
+    "xor": {
+        "inputs": {
+            "encoding": "0000",
+            "a_vectors": [],
+            "b_vectors": []
         },
-        "xor": {
-            "inputs": {
-                "a_vectors": [],
-                "b_vectors": []
-            },
-            "outputs": {
-                "c_output": [],
-                "z_flag": [],
-                "n_flag": [],
-                "c_flag": [],
-                "v_flag": []
-            }
+        "outputs": {
+            "c_output": [],
+            "z_flag": [],
+            "n_flag": [],
+            "c_flag": [],
+            "v_flag": []
+        }
+    },
+    "not": {
+        "inputs": {
+            "encoding": "0000",
+            "a_vectors": [],
+            "b_vectors": []
         },
-        "not": {
-            "inputs": {
-                "a_vectors": [],
-                "b_vectors": []
-            },
-            "outputs": {
-                "c_output": [],
-                "z_flag": [],
-                "n_flag": [],
-                "c_flag": [],
-                "v_flag": []
-            }
+        "outputs": {
+            "c_output": [],
+            "z_flag": [],
+            "n_flag": [],
+            "c_flag": [],
+            "v_flag": []
+        }
+    },
+    "lsl": {
+        "inputs": {
+            "encoding": "0000",
+            "a_vectors": [],
+            "b_vectors": []
         },
-        "lsl": {
-            "inputs": {
-                "a_vectors": [],
-                "b_vectors": []
-            },
-            "outputs": {
-                "c_output": [],
-                "z_flag": [],
-                "n_flag": [],
-                "c_flag": [],
-                "v_flag": []
-            }
+        "outputs": {
+            "c_output": [],
+            "z_flag": [],
+            "n_flag": [],
+            "c_flag": [],
+            "v_flag": []
+        }
+    },
+    "lsr": {
+        "inputs": {
+            "encoding": "0000",
+            "a_vectors": [],
+            "b_vectors": []
         },
-        "lsr": {
-            "inputs": {
-                "a_vectors": [],
-                "b_vectors": []
-            },
-            "outputs": {
-                "c_output": [],
-                "z_flag": [],
-                "n_flag": [],
-                "c_flag": [],
-                "v_flag": []
-            },
-            "cmp": {
-                "inputs": {
-                    "a_vectors": [],
-                    "b_vectors": []
-                },
-                "outputs": {
-                    "c_output": [],
-                    "z_flag": [],
-                    "n_flag": [],
-                    "c_flag": [],
-                    "v_flag": []
-                }
-            }
+        "outputs": {
+            "c_output": [],
+            "z_flag": [],
+            "n_flag": [],
+            "c_flag": [],
+            "v_flag": []
+        }
+    },
+    "cmp": {
+        "inputs": {
+            "encoding": "0000",
+            "a_vectors": [],
+            "b_vectors": []
+        },
+        "outputs": {
+            "c_output": [],
+            "z_flag": [],
+            "n_flag": [],
+            "c_flag": [],
+            "v_flag": []
         }
     }
 }
