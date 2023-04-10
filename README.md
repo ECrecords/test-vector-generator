@@ -26,6 +26,7 @@ To use this script, you need to provide a JSON file containing test data for var
         ...
     }
 }
+```
 
 The `inputs` and `outputs` objects contain lists of input and output values for each ALU operation. The `encoding` key is used to specify the opcode for the operation. The input and output values should be in decimal format.
 
