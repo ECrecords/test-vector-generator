@@ -45,7 +45,6 @@ def main():
                 c_flags: dict = data['outputs']['c_flag']
                 v_flags: dict = data['outputs']['v_flag']
 
-                print(f'{opcode}:\n{a_vectors}\n{b_vectors}\n{c_outputs}')
                 if not (a_vectors or b_vectors or c_outputs or z_flags or n_flags or c_flags or v_flags):
                     continue
                 else:
@@ -60,6 +59,8 @@ def main():
                         np.savetxt(output_file, comment, fmt='%s', newline='')
                         output_file.write('\n')
                         continue
+                
+                print(f'\'{operation}\' operation found.')
 
                 for a, b, c, zf, nf, cf, vf in zip(a_vectors, b_vectors, c_outputs, z_flags, n_flags, c_flags, v_flags):
                     a_bin: np.array = np.array(
@@ -87,6 +88,7 @@ def main():
                 comment[-1] = '#'
                 np.savetxt(output_file, comment, fmt='%s', newline='')
                 output_file.write('\n')
+            print(f'\ntest vectors written to {args.filename}.')
 
 
 if __name__ == '__main__':
