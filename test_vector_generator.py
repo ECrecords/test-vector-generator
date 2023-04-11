@@ -1,6 +1,81 @@
 import numpy as np
 import json
 import argparse
+from io import TextIOWrapper
+
+
+def read_json(json_file: str) -> dict:
+    with open(json_file, 'r') as input_file:
+        json_data: dict = json.load(input_file)
+    return json_data
+
+
+def write_header(output_file: TextIOWrapper, VECTOR_BITS: int, OPCODE_BITS: int) -> int:
+    code_label = [
+        f'OP{(OPCODE_BITS-1)-idx:01}' for idx in range(0, OPCODE_BITS)]
+    flag_label = ['Z  ', 'N  ', 'C  ', 'V  ']
+    abc_label = np.stack([np.array(
+        [f'A{(VECTOR_BITS-1)-idx:02}', f'B{(VECTOR_BITS-1)-idx:02}', f'C{(VECTOR_BITS-1)-idx:02}'], dtype='S3', ) for idx in range(0, VECTOR_BITS)]).astype(str)
+    abc_label = abc_label.transpose().reshape(-1)
+
+    labels = '     '.join(np.hstack([code_label, abc_label, flag_label]))
+
+    output_file.write(f'{labels}\n#{(len(labels)-2)*"-"}#\n')
+
+    return len(labels)
+
+
+def write_test(output_file: TextIOWrapper, json_data: dict, VECTOR_BITS: int, label_length: int) -> None:
+
+    for operation, data in json_data.items():
+
+        opcode: str = np.array(
+            [bit for bit in data['inputs']['encoding']]).astype(str)
+        a_vectors: dict = data['inputs']['a_vectors']
+        b_vectors: dict = data['inputs']['b_vectors']
+        c_outputs: dict = data['outputs']['c_output']
+        z_flags: dict = data['outputs']['z_flag']
+        n_flags: dict = data['outputs']['n_flag']
+        c_flags: dict = data['outputs']['c_flag']
+        v_flags: dict = data['outputs']['v_flag']
+
+        if not (a_vectors or b_vectors or c_outputs or z_flags or n_flags or c_flags or v_flags):
+            continue
+        else:
+            vector_lengths = [len(lst) for lst in [
+                a_vectors, b_vectors, c_outputs, z_flags, n_flags, c_flags, v_flags]]
+            if not all(length == vector_lengths[0] for length in vector_lengths):
+                output_file.write(
+                    f'# \'{operation}\' section in the JSON contains mismatching lengths, all lists inside must be of same length.')
+                output_file.write(f'\n#{(label_length-2)*"-"}#\n')
+
+                print(f'**error found in operation \'{operation}\'')
+                continue
+
+        print(f'\'{operation}\' operation found.')
+
+        for a, b, c, zf, nf, cf, vf in zip(a_vectors, b_vectors, c_outputs, z_flags, n_flags, c_flags, v_flags):
+            a_bin: np.array = np.array(
+                [bit for bit in np.binary_repr(a, VECTOR_BITS)]).astype(str)
+            b_bin: np.array = np.array(
+                [bit for bit in np.binary_repr(b, VECTOR_BITS)]).astype(str)
+            c_bin: np.array = np.array(
+                [bit for bit in np.binary_repr(c, VECTOR_BITS)]).astype(str)
+            zf_bin: np.array = np.array(
+                [bit for bit in np.binary_repr(zf, 1)]).astype(str)
+            nf_bin: np.array = np.array(
+                [bit for bit in np.binary_repr(nf, 1)]).astype(str)
+            cf_bin: np.array = np.array(
+                [bit for bit in np.binary_repr(cf, 1)]).astype(str)
+            vf_bin: np.array = np.array(
+                [bit for bit in np.binary_repr(vf, 1)]).astype(str)
+
+            line = np.hstack([opcode, a_bin, b_bin, c_bin,
+                              zf_bin, nf_bin, cf_bin, vf_bin])
+            np.savetxt(output_file, line, fmt='%s', newline='       ')
+            output_file.write('\n')
+
+        output_file.write(f'#{(label_length-2)*"-"}#\n')
 
 
 def main():
@@ -19,76 +94,12 @@ def main():
         parser.error(
             'No input file specified. Please provide an input file name.')
 
-    with open(args.json, 'r') as input_file:
-        json_data: dict = json.load(input_file)
-        with open(args.filename, 'w') as output_file:
+    with open(args.filename, 'w') as output_file:
+        json_data: dict = read_json(args.json)
+        label_len: int = write_header(output_file, NUM_BITS, OPCODE_BITS)
+        write_test(output_file, json_data, NUM_BITS, label_len)
 
-            code_label = [
-                f'OP{(OPCODE_BITS-1)-idx}' for idx in range(0, OPCODE_BITS)]
-            flag_label = [f'Z', f'N', f'C', f'V']
-            abc_label = np.stack([np.array(
-                [f'A{(NUM_BITS-1)-idx}', f'B{(NUM_BITS-1)-idx}', f'C{(NUM_BITS-1)-idx}'], dtype='S3', ) for idx in range(0, NUM_BITS)]).astype(str)
-            abc_label = abc_label.transpose().reshape(-1)
-
-            labels = np.hstack([code_label, abc_label, flag_label])
-
-            np.savetxt(output_file, labels, fmt='%s', newline='\t\t')
-            output_file.write('\n')
-
-            for operation, data in json_data.items():
-                opcode: str = np.array([bit for bit in data['inputs']['encoding']]).astype(str)
-                a_vectors: dict = data['inputs']['a_vectors']
-                b_vectors: dict = data['inputs']['b_vectors']
-                c_outputs: dict = data['outputs']['c_output']
-                z_flags: dict = data['outputs']['z_flag']
-                n_flags: dict = data['outputs']['n_flag']
-                c_flags: dict = data['outputs']['c_flag']
-                v_flags: dict = data['outputs']['v_flag']
-
-                if not (a_vectors or b_vectors or c_outputs or z_flags or n_flags or c_flags or v_flags):
-                    continue
-                else:
-                    vector_lengths = [len(lst) for lst in [
-                        a_vectors, b_vectors, c_outputs, z_flags, n_flags, c_flags, v_flags]]
-                    if not all(length == vector_lengths[0] for length in vector_lengths):
-                        output_file.write(
-                            f'# {operation} section in the JSON contains mismatching lengths, all lists inside the \"test_vector\" dictionary must be of same length.\n')
-                        comment = ['---------' for i in range(0, len(line)-10)]
-                        comment[0] = '#'
-                        comment[-1] = '#'
-                        np.savetxt(output_file, comment, fmt='%s', newline='')
-                        output_file.write('\n')
-                        continue
-                
-                print(f'\'{operation}\' operation found.')
-
-                for a, b, c, zf, nf, cf, vf in zip(a_vectors, b_vectors, c_outputs, z_flags, n_flags, c_flags, v_flags):
-                    a_bin: np.array = np.array(
-                        [bit for bit in np.binary_repr(a, NUM_BITS)]).astype(str)
-                    b_bin: np.array = np.array(
-                        [bit for bit in np.binary_repr(b, NUM_BITS)]).astype(str)
-                    c_bin: np.array = np.array(
-                        [bit for bit in np.binary_repr(c, NUM_BITS)]).astype(str)
-                    zf_bin: np.array = np.array(
-                        [bit for bit in np.binary_repr(zf, 1)]).astype(str)
-                    nf_bin: np.array = np.array(
-                        [bit for bit in np.binary_repr(nf, 1)]).astype(str)
-                    cf_bin: np.array = np.array(
-                        [bit for bit in np.binary_repr(cf, 1)]).astype(str)
-                    vf_bin: np.array = np.array(
-                        [bit for bit in np.binary_repr(vf, 1)]).astype(str)
-
-                    line = np.hstack([opcode, a_bin, b_bin, c_bin,
-                                      zf_bin, nf_bin, cf_bin, vf_bin])
-                    np.savetxt(output_file, line, fmt='%s', newline='\t\t')
-                    output_file.write('\n')
-
-                comment = ['---------' for _ in range(0, len(line)-10)]
-                comment[0] = '#'
-                comment[-1] = '#'
-                np.savetxt(output_file, comment, fmt='%s', newline='')
-                output_file.write('\n')
-            print(f'\ntest vectors written to {args.filename}.')
+    print(f'\ntest vectors written to {args.filename}.')
 
 
 if __name__ == '__main__':
