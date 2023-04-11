@@ -2,11 +2,15 @@ import numpy as np
 import json
 import argparse
 from io import TextIOWrapper
-
+import sys
 
 def read_json(json_file: str) -> dict:
     with open(json_file, 'r') as input_file:
-        json_data: dict = json.load(input_file)
+        try:
+            json_data: dict = json.load(input_file)
+        except json.JSONDecodeError:
+            print(f'FATAL ERROR: check syntax of {json_file}')
+            sys.exit(1)
     return json_data
 
 
@@ -28,29 +32,30 @@ def write_header(output_file: TextIOWrapper, VECTOR_BITS: int, OPCODE_BITS: int)
 def write_test(output_file: TextIOWrapper, json_data: dict, VECTOR_BITS: int, label_length: int) -> None:
 
     for operation, data in json_data.items():
-
-        opcode: str = np.array(
-            [bit for bit in data['inputs']['encoding']]).astype(str)
-        a_vectors: dict = data['inputs']['a_vectors']
-        b_vectors: dict = data['inputs']['b_vectors']
-        c_outputs: dict = data['outputs']['c_output']
-        z_flags: dict = data['outputs']['z_flag']
-        n_flags: dict = data['outputs']['n_flag']
-        c_flags: dict = data['outputs']['c_flag']
-        v_flags: dict = data['outputs']['v_flag']
-
-        if not (a_vectors or b_vectors or c_outputs or z_flags or n_flags or c_flags or v_flags):
+        
+        try:
+            opcode: str = np.array(
+                [bit for bit in data['inputs']['encoding']]).astype(str)
+            a_vectors: dict = data['inputs']['a_vectors']
+            b_vectors: dict = data['inputs']['b_vectors']
+            c_outputs: dict = data['outputs']['c_output']
+            z_flags: dict = data['outputs']['z_flag']
+            n_flags: dict = data['outputs']['n_flag']
+            c_flags: dict = data['outputs']['c_flag']
+            v_flags: dict = data['outputs']['v_flag']
+        except KeyError:
+            print(f'ERROR: check \'{operation}\' operation')
             continue
-        else:
-            vector_lengths = [len(lst) for lst in [
-                a_vectors, b_vectors, c_outputs, z_flags, n_flags, c_flags, v_flags]]
-            if not all(length == vector_lengths[0] for length in vector_lengths):
-                output_file.write(
-                    f'# \'{operation}\' section in the JSON contains mismatching lengths, all lists inside must be of same length.')
-                output_file.write(f'\n#{(label_length-2)*"-"}#\n')
 
-                print(f'**error found in operation \'{operation}\'')
-                continue
+        vector_lengths = [len(lst) for lst in [
+            a_vectors, b_vectors, c_outputs, z_flags, n_flags, c_flags, v_flags]]
+        if not all(length == vector_lengths[0] for length in vector_lengths):
+            output_file.write(
+                f'# \'{operation}\' section in the JSON contains mismatching lengths, all lists inside must be of same length.')
+            output_file.write(f'\n#{(label_length-2)*"-"}#\n')
+
+            print(f'ERROR: width mismatch in \'{operation}\' operation')
+            continue
 
         print(f'\'{operation}\' operation found.')
 
