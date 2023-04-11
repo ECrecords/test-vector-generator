@@ -36,19 +36,26 @@ def write_test(output_file: TextIOWrapper, json_data: dict, VECTOR_BITS: int, la
         try:
             opcode: str = np.array(
                 [bit for bit in data['inputs']['encoding']]).astype(str)
-            a_vectors: dict = data['inputs']['a_vectors']
-            b_vectors: dict = data['inputs']['b_vectors']
-            c_outputs: dict = data['outputs']['c_output']
-            z_flags: dict = data['outputs']['z_flag']
-            n_flags: dict = data['outputs']['n_flag']
-            c_flags: dict = data['outputs']['c_flag']
-            v_flags: dict = data['outputs']['v_flag']
+            a_vectors: list = data['inputs']['a_vectors']
+            b_vectors: list = data['inputs']['b_vectors']
+            c_outputs: list = data['outputs']['c_output']
+            z_flags: list = data['outputs']['z_flag']
+            n_flags: list = data['outputs']['n_flag']
+            c_flags: list = data['outputs']['c_flag']
+            v_flags: list = data['outputs']['v_flag']
         except KeyError:
             print(f'ERROR: check \'{operation}\' operation')
             continue
 
+        
+        
+        if any(not lst for lst in [a_vectors, b_vectors, c_outputs, z_flags, n_flags, c_flags, v_flags]):
+            print(f'WARNING: \'{operation}\' is empty')
+            continue
+
         vector_lengths = [len(lst) for lst in [
             a_vectors, b_vectors, c_outputs, z_flags, n_flags, c_flags, v_flags]]
+
         if not all(length == vector_lengths[0] for length in vector_lengths):
             output_file.write(
                 f'# \'{operation}\' section in the JSON contains mismatching lengths, all lists inside must be of same length.')
@@ -58,6 +65,7 @@ def write_test(output_file: TextIOWrapper, json_data: dict, VECTOR_BITS: int, la
             continue
 
         print(f'\'{operation}\' operation found.')
+        output_file.write(f'# {operation.upper()}\n')
 
         for a, b, c, zf, nf, cf, vf in zip(a_vectors, b_vectors, c_outputs, z_flags, n_flags, c_flags, v_flags):
             a_bin: np.array = np.array(
